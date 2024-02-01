@@ -3,6 +3,7 @@ package org.example;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MouseAutomation implements Runnable {
     private volatile boolean running = true;
@@ -21,21 +22,24 @@ public class MouseAutomation implements Runnable {
                         Color pixelColor = new Color(screen.getRGB(x, y));
 
                         if (isYellowColor(pixelColor)) {
-                            System.out.println("Found a yellow color area!");
+//                            System.out.println("Found a yellow color area!");
 
                             robot.mouseMove(x, y);
 
                             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
-                            Thread.sleep(1000);
+                            double sleepTimeInSeconds = 0.1 + ThreadLocalRandom.current().nextDouble(0.8);
+                            long sleepTimeInMilliseconds = (long) (sleepTimeInSeconds * 1000);
+                            Thread.sleep(sleepTimeInMilliseconds);
 
                             continue outerloop;
                         }
                     }
                 }
-
-                Thread.sleep(1000);
+                double sleepTimeInSeconds = 0.1 + ThreadLocalRandom.current().nextDouble(0.8);
+                long sleepTimeInMilliseconds = (long) (sleepTimeInSeconds * 1000);
+                Thread.sleep(sleepTimeInMilliseconds);
             }
         } catch (AWTException | InterruptedException e) {
             e.printStackTrace();
