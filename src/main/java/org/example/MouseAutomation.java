@@ -12,28 +12,33 @@ public class MouseAutomation implements Runnable {
     public void run() {
         try {
             Robot robot = new Robot();
-            Rectangle searchArea = new Rectangle(0, 0, 200, 200);
+            Rectangle searchArea = new Rectangle(666, 233, 550, 650);
 
             outerloop:
             while (running) {
                 BufferedImage screen = robot.createScreenCapture(searchArea);
+                int yellowPixelCount = 0;
                 for (int x = 0; x < screen.getWidth(); x++) {
                     for (int y = 0; y < screen.getHeight(); y++) {
                         Color pixelColor = new Color(screen.getRGB(x, y));
 
                         if (isYellowColor(pixelColor)) {
-//                            System.out.println("Found a yellow color area!");
+                            yellowPixelCount++;
 
-                            robot.mouseMove(x, y);
+                            if (yellowPixelCount > 1300) {
+                                robot.mouseMove(searchArea.x + x, searchArea.y + y);
 
-                            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                                robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                                robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
-                            double sleepTimeInSeconds = 0.1 + ThreadLocalRandom.current().nextDouble(0.8);
-                            long sleepTimeInMilliseconds = (long) (sleepTimeInSeconds * 1000);
-                            Thread.sleep(sleepTimeInMilliseconds);
+                                yellowPixelCount = 0; // Reset the counter
 
-                            continue outerloop;
+                                double sleepTimeInSeconds = 0.1 + ThreadLocalRandom.current().nextDouble(0.8);
+                                long sleepTimeInMilliseconds = (long) (sleepTimeInSeconds * 1000);
+                                Thread.sleep(sleepTimeInMilliseconds);
+
+                                continue outerloop;
+                            }
                         }
                     }
                 }
