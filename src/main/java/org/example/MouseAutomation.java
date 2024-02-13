@@ -12,7 +12,7 @@ public class MouseAutomation implements Runnable {
     public void run() {
         try {
             Robot robot = new Robot();
-            Rectangle searchArea = new Rectangle(666, 233, 550, 650);
+            Rectangle searchArea = new Rectangle(1590, 55, 280, 280);
 
             outerloop:
             while (running) {
